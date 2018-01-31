@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.apidemo.mac.myfinalstydyandroid.CheckBox.CheckBoxActivity;
+import com.apidemo.mac.myfinalstydyandroid.ImageLoad.ImageDownloader;
+import com.apidemo.mac.myfinalstydyandroid.ImageLoad.ImageListActivity;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -55,7 +57,8 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 //new MyDialogFragment().show(getSupportFragmentManager(), "myDialog");
-                startActivity(new Intent(MainActivity.this, CheckBoxActivity.class));
+                //startActivity(new Intent(MainActivity.this, CheckBoxActivity.class));
+                startActivity(new Intent(MainActivity.this, ImageListActivity.class));
             }
         });
     }

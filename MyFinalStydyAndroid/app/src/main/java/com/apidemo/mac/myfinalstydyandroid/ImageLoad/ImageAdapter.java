@@ -34,17 +34,16 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     private static final String[] URLS = {
-            "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg",
-            "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg",
-            "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg",
-            "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg",
-            "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg",
-            "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg",
-            "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg",
-            "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg",
-            "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg",
-            "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg",
-            "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg"
+            "https://cdn-images-1.medium.com/max/2000/1*1Sc4-uiN-JFKiTWClBQwcw.jpeg",
+            "https://cdn-images-1.medium.com/max/2000/1*1Sc4-uiN-JFKiTWClBQwcw.jpeg",
+            "https://cdn-images-1.medium.com/max/2000/1*1Sc4-uiN-JFKiTWClBQwcw.jpeg",
+            "https://cdn-images-1.medium.com/max/2000/1*1Sc4-uiN-JFKiTWClBQwcw.jpeg",
+            "https://cdn-images-1.medium.com/max/2000/1*1Sc4-uiN-JFKiTWClBQwcw.jpeg",
+            "https://cdn-images-1.medium.com/max/2000/1*1Sc4-uiN-JFKiTWClBQwcw.jpeg",
+            "https://cdn-images-1.medium.com/max/2000/1*1Sc4-uiN-JFKiTWClBQwcw.jpeg",
+            "https://cdn-images-1.medium.com/max/2000/1*1Sc4-uiN-JFKiTWClBQwcw.jpeg",
+            "https://cdn-images-1.medium.com/max/2000/1*1Sc4-uiN-JFKiTWClBQwcw.jpeg",
+            "https://cdn-images-1.medium.com/max/2000/1*1Sc4-uiN-JFKiTWClBQwcw.jpeg"
     };
 
     private final ImageDownloader imageDownloader = new ImageDownloader();
