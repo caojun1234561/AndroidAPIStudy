@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DrCheckLayout">
+        <attr name="textSize" format="integer" />
+        <attr name="textDefaultColor" format="reference" />
+        <attr name="textSelectedColor" format="reference" />
+        <attr name="textGravity">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+            <enum name="center" value="2" />
+        </attr>
+
+        <attr name="drawableRes" format="reference" />
+        <attr name="drawableGravity">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+        <attr name="multi" format="boolean" />
+        <attr name="minHeight" format="dimension" />
+    </declare-styleable>
+</resources>
