@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.apidemo.mac.myfinalstydyandroid;
+package com.apidemo.mac.myfinalstydyandroid.ImageLoad;
 
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.widget.RadioGroup;
+
+import com.apidemo.mac.myfinalstydyandroid.R;
 
 public class ImageListActivity extends ListActivity implements RadioGroup.OnCheckedChangeListener {
 

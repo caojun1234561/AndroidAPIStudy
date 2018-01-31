@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.apidemo.mac.myfinalstydyandroid;
+package com.apidemo.mac.myfinalstydyandroid.ImageLoad;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

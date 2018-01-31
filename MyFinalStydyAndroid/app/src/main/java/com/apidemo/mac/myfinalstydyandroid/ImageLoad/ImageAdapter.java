@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.apidemo.mac.myfinalstydyandroid;
+package com.apidemo.mac.myfinalstydyandroid.ImageLoad;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+
+import com.apidemo.mac.myfinalstydyandroid.R;
 
 public class ImageAdapter extends BaseAdapter {
 

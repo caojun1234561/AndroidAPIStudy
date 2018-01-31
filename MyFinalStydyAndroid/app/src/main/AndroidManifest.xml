@@ -18,8 +18,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ImageListActivity" />
-        <activity android:name=".CheckBoxActivity" />
+        <activity android:name=".ImageLoad.ImageListActivity" />
+        <activity android:name=".CheckBox.CheckBoxActivity" />
     </application>
 
 </manifest>

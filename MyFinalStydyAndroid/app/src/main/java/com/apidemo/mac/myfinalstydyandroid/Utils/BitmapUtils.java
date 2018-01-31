@@ -1,4 +1,4 @@
-package com.apidemo.mac.myfinalstydyandroid;
+package com.apidemo.mac.myfinalstydyandroid.Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

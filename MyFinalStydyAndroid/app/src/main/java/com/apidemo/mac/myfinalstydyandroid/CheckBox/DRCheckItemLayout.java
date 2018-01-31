@@ -1,4 +1,4 @@
-package com.apidemo.mac.myfinalstydyandroid;
+package com.apidemo.mac.myfinalstydyandroid.CheckBox;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,8 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.apidemo.mac.myfinalstydyandroid.R;
 
 /**
  * Created by cqj on 2018/1/29.

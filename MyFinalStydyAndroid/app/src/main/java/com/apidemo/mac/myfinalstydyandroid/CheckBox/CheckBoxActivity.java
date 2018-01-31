@@ -1,8 +1,10 @@
-package com.apidemo.mac.myfinalstydyandroid;
+package com.apidemo.mac.myfinalstydyandroid.CheckBox;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
+import com.apidemo.mac.myfinalstydyandroid.R;
 
 /**
  * Created by cqj on 2018/1/29.

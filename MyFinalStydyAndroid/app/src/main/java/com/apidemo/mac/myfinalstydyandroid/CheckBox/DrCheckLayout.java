@@ -1,4 +1,4 @@
-package com.apidemo.mac.myfinalstydyandroid;
+package com.apidemo.mac.myfinalstydyandroid.CheckBox;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import com.apidemo.mac.myfinalstydyandroid.R;
 
 import java.util.ArrayList;
 import java.util.List;

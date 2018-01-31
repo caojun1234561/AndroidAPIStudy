@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.apidemo.mac.myfinalstydyandroid.DrCheckLayout
+    <com.apidemo.mac.myfinalstydyandroid.CheckBox.DrCheckLayout
         android:id="@+id/haha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
