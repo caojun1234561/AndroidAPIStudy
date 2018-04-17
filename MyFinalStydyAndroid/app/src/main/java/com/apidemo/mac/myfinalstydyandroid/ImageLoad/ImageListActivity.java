@@ -38,13 +38,13 @@ public class ImageListActivity extends ListActivity implements RadioGroup.OnChec
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        ImageDownloader.Mode mode = ImageDownloader.Mode.NO_DOWNLOADED_DRAWABLE;
-        if (checkedId == R.id.correctButton) {
-            mode = ImageDownloader.Mode.CORRECT;
-        } else if (checkedId == R.id.randomButton) {
-            mode = ImageDownloader.Mode.NO_DOWNLOADED_DRAWABLE;
-        }
+//        ImageDownloader.Mode mode = ImageDownloader.Mode.NO_DOWNLOADED_DRAWABLE;
+//        if (checkedId == R.id.correctButton) {
+//            mode = ImageDownloader.Mode.CORRECT;
+//        } else if (checkedId == R.id.randomButton) {
+//            mode = ImageDownloader.Mode.NO_DOWNLOADED_DRAWABLE;
+//        }
 
-        ((ImageAdapter) getListAdapter()).getImageDownloader().setMode(mode);
+      //  ((ImageAdapter) getListAdapter()).getImageDownloader().setMode(mode);
     }
 }

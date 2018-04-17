@@ -3,7 +3,13 @@
     package="com.apidemo.mac.myfinalstydyandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="MediaStore.Images.Media.INTERNAL_CONTENT_URI" />
+    <uses-permission android:name="MediaStore.Images.Media.EXTERNAL_CONTENT_URI" />
 
+    <!-- 、屏幕截取读取文件 -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,9 +24,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ImageLoad.ImageListActivity" />
         <activity android:name=".CheckBox.CheckBoxActivity" />
+        <activity android:name=".refrence.RefrenceActivity" />
+        <activity
+            android:name=".ScreenShot.ScreenShotActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MyView.ScrollViewActvity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Bitmap.BitmapActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".databinding.DataBindingActivity"
+            android:label="@string/title_activity_data_binding_test"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".picasso.PicassoActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".RxJava.RxJavaActivity"></activity>
     </application>
 
 </manifest>

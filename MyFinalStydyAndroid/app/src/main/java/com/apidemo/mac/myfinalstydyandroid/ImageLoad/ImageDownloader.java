@@ -16,7 +16,9 @@
 
 package com.apidemo.mac.myfinalstydyandroid.ImageLoad;
 
+
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -29,8 +31,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -43,11 +45,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ImageDownloader {
     private static final String LOG_TAG = "ImageDownloader";
-
-    public enum Mode {NO_DOWNLOADED_DRAWABLE, CORRECT}
-
-    private Mode mode = Mode.CORRECT;
-
     /**
      * Download the specified image from the Internet and binds it to the provided ImageView. The
      * binding is immediate if the image is found in the cache and will be done asynchronously
@@ -88,21 +85,14 @@ public class ImageDownloader {
         }
 
         if (cancelPotentialDownload(url, imageView)) {
-            switch (mode) {
-                case NO_DOWNLOADED_DRAWABLE:
-                    imageView.setMinimumHeight(156);
-                    BitmapDownloaderTask task = new BitmapDownloaderTask(imageView);
-                    task.execute(url);
-                    break;
-
-                case CORRECT:
-                    task = new BitmapDownloaderTask(imageView);
-                    DownloadedDrawable downloadedDrawable = new DownloadedDrawable(task);
-                    imageView.setImageDrawable(downloadedDrawable);
-                    imageView.setMinimumHeight(156);
-                    task.execute(url);
-                    break;
-            }
+            imageView.setMinimumHeight(156);
+            BitmapDownloaderTask task = new BitmapDownloaderTask(imageView);
+            task.execute(url);
+            // task = new BitmapDownloaderTask(imageView);
+//            DownloadedDrawable downloadedDrawable = new DownloadedDrawable(task);
+//            imageView.setImageDrawable(downloadedDrawable);
+//            imageView.setMinimumHeight(156);
+//            task.execute(url);
         }
     }
 
@@ -143,6 +133,76 @@ public class ImageDownloader {
         return null;
     }
 
+    Bitmap downloadBitmap(String url) {
+        final int IO_BUFFER_SIZE = 4 * 1024;
+
+        // AndroidHttpClient is not allowed to be used from the main thread
+        URL urlBean = null;
+        HttpURLConnection conn = null;
+        try {
+            urlBean = new URL(url);
+            conn = (HttpURLConnection) urlBean.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(1000);
+            conn.setUseCaches(false);
+            conn.connect();
+            //调用getInputStream方法后，服务端才会收到请求，并阻塞式地接收服务端返回的数据
+            InputStream is = conn.getInputStream();
+            //将InputStream转换成byte数组,getBytesByInputStream会关闭输入流
+            Bitmap drawable = BitmapFactory.decodeStream(is);
+            if (drawable != null)
+                return drawable;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+
+//        AndroidHttpClient.newInstance("Android");
+//        final HttpGet getRequest = new HttpGet(url);
+//
+//        try {
+//            HttpResponse response = client.execute(getRequest);
+//            final int statusCode = response.getStatusLine().getStatusCode();
+//            if (statusCode != HttpStatus.SC_OK) {
+//                Log.w("ImageDownloader", "Error " + statusCode +
+//                        " while retrieving bitmap from " + url);
+//                return null;
+//            }
+//
+//            final HttpEntity entity = response.getEntity();
+//            if (entity != null) {
+//                InputStream inputStream = null;
+//                try {
+//                    inputStream = entity.getContent();
+//                    // return BitmapFactory.decodeStream(inputStream);
+//                    // Bug on slow connections, fixed in future release.
+//                    return BitmapFactory.decodeStream(new FlushedInputStream(inputStream));
+//                } finally {
+//                    if (inputStream != null) {
+//                        inputStream.close();
+//                    }
+//                    entity.consumeContent();
+//                }
+//            }
+//        } catch (IOException e) {
+//            getRequest.abort();
+//            Log.w(LOG_TAG, "I/O error while retrieving bitmap from " + url, e);
+//        } catch (IllegalStateException e) {
+//            getRequest.abort();
+//            Log.w(LOG_TAG, "Incorrect URL: " + url);
+//        } catch (Exception e) {
+//            getRequest.abort();
+//            Log.w(LOG_TAG, "Error while retrieving bitmap from " + url, e);
+//        } finally {
+//            if ((client instanceof AndroidHttpClient)) {
+//                ((AndroidHttpClient) client).close();
+//            }
+//        }
+        return null;
+    }
 
     /*
      * An InputStream that skips the exact number of bytes provided, unless it reaches EOF.
@@ -187,7 +247,8 @@ public class ImageDownloader {
          */
         @Override
         protected Bitmap doInBackground(String... params) {
-            return null;
+            url = params[0];
+            return downloadBitmap(url);
         }
 
         /**
@@ -206,7 +267,7 @@ public class ImageDownloader {
                 BitmapDownloaderTask bitmapDownloaderTask = getBitmapDownloaderTask(imageView);
                 // Change bitmap only if this process is still associated with it
                 // Or if we don't use any bitmap to task association (NO_DOWNLOADED_DRAWABLE mode)
-                if ((this == bitmapDownloaderTask) || (mode != Mode.CORRECT)) {
+                if ((this == bitmapDownloaderTask)) {
                     imageView.setImageBitmap(bitmap);
                 }
             }
@@ -235,36 +296,30 @@ public class ImageDownloader {
         }
     }
 
-    public void setMode(Mode mode) {
-        this.mode = mode;
-        clearCache();
-    }
-
     
     /*
-     * Cache-related fields and methods. 缓存有关的字段和方法
+     * Cache-related fields and methods.
      * 
      * We use a hard and a soft cache. A soft reference cache is too aggressively cleared by the
-     * Garbage Collector. 我们使用物理缓存和内存缓存
+     * Garbage Collector.
      */
 
-    private static final int HARD_CACHE_CAPACITY = 10;//硬件缓存容量
+    private static final int HARD_CACHE_CAPACITY = 10;
     private static final int DELAY_BEFORE_PURGE = 10 * 1000; // in milliseconds
 
     // Hard cache, with a fixed maximum capacity and a life duration
-    private final HashMap<String, Bitmap> sHardBitmapCache =
-            new LinkedHashMap<String, Bitmap>(HARD_CACHE_CAPACITY / 2, 0.75f, true) {
-                @Override
-                protected boolean removeEldestEntry(Entry<String, Bitmap> eldest) {
-                    if (size() > HARD_CACHE_CAPACITY) {
-                        // Entries push-out of hard reference cache are transferred to soft reference cache
-                        sSoftBitmapCache.put(eldest.getKey(), new SoftReference<Bitmap>(eldest.getValue()));
-                        return true;
-                    } else
-                        return false;
-                }
-            };
-
+//    private final HashMap<String, Bitmap> sHardBitmapCache =
+//            new LinkedHashMap<String, Bitmap>(HARD_CACHE_CAPACITY / 2, 0.75f, true) {
+//                @Override
+//                protected boolean removeEldestEntry(Entry<String, Bitmap> eldest) {
+//                    if (size() > HARD_CACHE_CAPACITY) {
+//                        // Entries push-out of hard reference cache are transferred to soft reference cache
+//                        sSoftBitmapCache.put(eldest.getKey(), new SoftReference<Bitmap>(eldest.getValue()));
+//                        return true;
+//                    } else
+//                        return false;
+//                }
+//            };
 
     // Soft cache for bitmaps kicked out of hard cache
     private final static ConcurrentHashMap<String, SoftReference<Bitmap>> sSoftBitmapCache =
@@ -284,11 +339,11 @@ public class ImageDownloader {
      * @param bitmap The newly downloaded bitmap.
      */
     private void addBitmapToCache(String url, Bitmap bitmap) {
-        if (bitmap != null) {
-            synchronized (sHardBitmapCache) {
-                sHardBitmapCache.put(url, bitmap);
-            }
-        }
+//        if (bitmap != null) {
+//            synchronized (sHardBitmapCache) {
+//                sHardBitmapCache.put(url, bitmap);
+//            }
+//        }
     }
 
     /**
@@ -297,16 +352,16 @@ public class ImageDownloader {
      */
     private Bitmap getBitmapFromCache(String url) {
         // First try the hard reference cache
-        synchronized (sHardBitmapCache) {
-            final Bitmap bitmap = sHardBitmapCache.get(url);
-            if (bitmap != null) {
-                // Bitmap found in hard cache
-                // Move element to first position, so that it is removed last
-                sHardBitmapCache.remove(url);
-                sHardBitmapCache.put(url, bitmap);
-                return bitmap;
-            }
-        }
+//        synchronized (sHardBitmapCache) {
+//            final Bitmap bitmap = sHardBitmapCache.get(url);
+//            if (bitmap != null) {
+//                // Bitmap found in hard cache
+//                // Move element to first position, so that it is removed last
+//                sHardBitmapCache.remove(url);
+//                sHardBitmapCache.put(url, bitmap);
+//                return bitmap;
+//            }
+//        }
 
         // Then try the soft reference cache
         SoftReference<Bitmap> bitmapReference = sSoftBitmapCache.get(url);
@@ -329,7 +384,7 @@ public class ImageDownloader {
      * efficiency reasons, the cache will automatically be cleared after a certain inactivity delay.
      */
     public void clearCache() {
-        sHardBitmapCache.clear();
+      //  sHardBitmapCache.clear();
         sSoftBitmapCache.clear();
     }
 

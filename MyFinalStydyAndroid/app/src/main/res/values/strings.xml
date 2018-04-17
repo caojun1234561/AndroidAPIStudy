@@ -4,4 +4,5 @@
     <string name="noTasks">No tasks</string>
     <string name="random">Random</string>
     <string name="correct">Correct</string>
+    <string name="title_activity_data_binding_test">DataBindingTestActivity</string>
 </resources>

@@ -10,20 +10,22 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.apidemo.mac.myfinalstydyandroid.CheckBox.CheckBoxActivity;
-import com.apidemo.mac.myfinalstydyandroid.ImageLoad.ImageDownloader;
-import com.apidemo.mac.myfinalstydyandroid.ImageLoad.ImageListActivity;
+import com.apidemo.mac.myfinalstydyandroid.MyView.ScrollViewActvity;
+import com.apidemo.mac.myfinalstydyandroid.RxJava.RxJavaActivity;
+import com.apidemo.mac.myfinalstydyandroid.ScreenShot.ScreenShotActivity;
+import com.apidemo.mac.myfinalstydyandroid.Utils.WindowUtil;
+import com.apidemo.mac.myfinalstydyandroid.picasso.PicassoActivity;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,13 +35,14 @@ import java.util.Map;
  */
 
 public class MainActivity extends FragmentActivity {
-    //ImageView imageView;
+    ImageView imageView;
     RecyclerView recyclerView;
-    String imageUrl = "http://dynamic-image.yesky.com/740x-/uploadImages/2017/326/48/ODY4AL2TV0GF.jpg";
+    String imageUrl = "http://img0.imgtn.bdimg.com/it/u=3461919426,2481953320&fm=27&gp=0.jpg";
     private static final String[] URLS = {
     };
     String[] images = new String[]{imageUrl, imageUrl, imageUrl, imageUrl, imageUrl, imageUrl, imageUrl, imageUrl, imageUrl, imageUrl};
     int i;
+    Bitmap bitmap1;
     private Map<Integer, Bitmap> bitmapMap = new HashMap<>();
     MyAdapter myAdapter;
 
@@ -48,19 +51,74 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.list);
-        //imageView = findViewById(R.id.image);
+        imageView = findViewById(R.id.image);
         myAdapter = new MyAdapter();
-        myAdapter.setUrlList(Arrays.asList(URLS));
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ScreenShotActivity.class));
+            }
+        });
+        // myAdapter.setUrlList(Arrays.asList(images));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(myAdapter);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_1);
+        if (bitmap != null) {
+            Log.e("Bimap 压缩前宽高:", "宽:" + String.valueOf(bitmap.getWidth()) + ",高:" + String.valueOf(bitmap.getHeight()));
+        }
+
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadImage(1, imageView, imageUrl);
+                // Bitmap bitmap = getImageView(imageUrl);
+//                if (bitmap1==null){
+//                    bitmap1=BitmapFactory.decodeResource(getResources(), R.mipmap.ic_2);
+//                }else {
+//                    bitmap1.recycle();
+//                }
+
                 //new MyDialogFragment().show(getSupportFragmentManager(), "myDialog");
                 //startActivity(new Intent(MainActivity.this, CheckBoxActivity.class));
-                startActivity(new Intent(MainActivity.this, ImageListActivity.class));
+
+                //startActivity(new Intent(MainActivity.this, RefrenceActivity.class));
             }
         });
+        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ScrollViewActvity.class));
+            }
+        });
+        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("showTag", "" + WindowUtil.checkDeviceHasNavigationBar(MainActivity.this));
+                //startActivity(new Intent(MainActivity.this, BitmapActivity.class));
+
+            }
+        });
+
+        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, PicassoActivity.class));
+            }
+        });
+        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, RxJavaActivity.class));
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     public void loadImage(final int position, ImageView imageView, final String url) {
@@ -68,7 +126,6 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void run() {
-                // TODO Auto-generated method stub
                 Bitmap bmp = getImageView(url);
                 Message msg = new Message();
                 msg.what = 0;
@@ -86,8 +143,9 @@ public class MainActivity extends FragmentActivity {
             switch (msg.what) {
                 case 0: {
                     Bitmap bmp = (Bitmap) msg.obj;
-                    bitmapMap.put(msg.arg1, bmp);
-                    myAdapter.notifyItemChanged(msg.arg1);
+                    imageView.setImageBitmap(bmp);
+//                    bitmapMap.put(msg.arg1, bmp);
+//                    myAdapter.notifyItemChanged(msg.arg1);
                     break;
                 }
             }
@@ -104,11 +162,14 @@ public class MainActivity extends FragmentActivity {
             connection.setUseCaches(false);//不设置缓存
             connection.connect();
             InputStream inputStream = connection.getInputStream();
-            bitmap = BitmapFactory.decodeStream(inputStream);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+            Log.e("Bimap 压缩前宽高:", "宽:" + String.valueOf(bitmap.getWidth()) + ",高:" + String.valueOf(bitmap.getHeight()));
+            Log.e("Bimap 压缩前宽高:", "宽:" + String.valueOf(options.outWidth) + ",高:" + String.valueOf(options.outHeight));
             inputStream.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("a", "b", e);
         }
         return bitmap;
     }
